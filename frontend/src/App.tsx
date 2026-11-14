@@ -1,6 +1,8 @@
 import { useState } from 'react';
+import type { Producto } from './api/productos';
 import { AlertaStockBajo } from './components/AlertaStockBajo';
 import { FiltroCategoria } from './components/FiltroCategoria';
+import { FormularioMovimiento } from './components/FormularioMovimiento';
 import { GraficoStock } from './components/GraficoStock';
 import { TablaProductos } from './components/TablaProductos';
 import { useCategorias } from './hooks/useCategorias';
@@ -11,6 +13,9 @@ function App() {
   const [categoria, setCategoria] = useState('');
   const categorias = useCategorias();
   const { productos, cargando, error } = useProductos(categoria || undefined);
+  // Producto para el que está abierto el formulario de movimiento (null = cerrado)
+  const [productoSeleccionado, setProductoSeleccionado] =
+    useState<Producto | null>(null);
 
   return (
     <main className="mx-auto max-w-5xl space-y-6 p-6">
@@ -37,9 +42,19 @@ function App() {
           className={`space-y-6 transition-opacity ${cargando ? 'opacity-50' : ''}`}
         >
           <AlertaStockBajo productos={productos} />
-          <TablaProductos productos={productos} />
+          <TablaProductos
+            productos={productos}
+            onRegistrarMovimiento={setProductoSeleccionado}
+          />
           <GraficoStock productos={productos} />
         </div>
+      )}
+
+      {productoSeleccionado && (
+        <FormularioMovimiento
+          producto={productoSeleccionado}
+          onCerrar={() => setProductoSeleccionado(null)}
+        />
       )}
     </main>
   );

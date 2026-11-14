@@ -4,9 +4,10 @@ import { EstadoStockBadge } from './EstadoStockBadge';
 
 interface Props {
   productos: Producto[];
+  onRegistrarMovimiento: (producto: Producto) => void;
 }
 
-export function TablaProductos({ productos }: Props) {
+export function TablaProductos({ productos, onRegistrarMovimiento }: Props) {
   if (productos.length === 0) {
     return (
       <p className="py-8 text-center text-gray-500">
@@ -27,6 +28,9 @@ export function TablaProductos({ productos }: Props) {
             </th>
             <th className="px-4 py-3 text-right font-medium">Stock</th>
             <th className="px-4 py-3 font-medium">Estado</th>
+            <th className="px-4 py-3">
+              <span className="sr-only">Acciones</span>
+            </th>
           </tr>
         </thead>
         <tbody className="divide-y divide-gray-100">
@@ -45,6 +49,15 @@ export function TablaProductos({ productos }: Props) {
               </td>
               <td className="px-4 py-3">
                 <EstadoStockBadge stock={producto.stockActual} />
+              </td>
+              <td className="px-4 py-3 text-right">
+                <button
+                  type="button"
+                  onClick={() => onRegistrarMovimiento(producto)}
+                  className="rounded-md border border-gray-300 px-3 py-1 text-xs font-medium whitespace-nowrap hover:bg-gray-50"
+                >
+                  Registrar movimiento
+                </button>
               </td>
             </tr>
           ))}
