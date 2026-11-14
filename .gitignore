@@ -1,0 +1,32 @@
+# Dependencias
+node_modules/
+
+# Builds
+dist/
+build/
+*.tsbuildinfo
+
+# Variables de entorno (solo se sube .env.example)
+.env
+.env.*
+!.env.example
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# Tests
+coverage/
+
+# Editores y sistema operativo
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.DS_Store
+Thumbs.db
+
+# Material de la consigna (no se publica)
+docs/consigna/
