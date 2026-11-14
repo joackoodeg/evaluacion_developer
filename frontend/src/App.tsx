@@ -1,122 +1,63 @@
-import { useState } from 'react'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import './App.css'
+import { useState } from 'react';
+import type { Producto } from './api/productos';
+import { AlertaStockBajo } from './components/AlertaStockBajo';
+import { FiltroCategoria } from './components/FiltroCategoria';
+import { FormularioMovimiento } from './components/FormularioMovimiento';
+import { GraficoStock } from './components/GraficoStock';
+import { TablaProductos } from './components/TablaProductos';
+import { useCategorias } from './hooks/useCategorias';
+import { useProductos } from './hooks/useProductos';
 
 function App() {
-  const [count, setCount] = useState(0)
+  // '' = todas las categorías; el filtro se aplica en el backend con ?categoria=
+  const [categoria, setCategoria] = useState('');
+  const categorias = useCategorias();
+  const { productos, cargando, error } = useProductos(categoria || undefined);
+  // Producto para el que está abierto el formulario de movimiento (null = cerrado)
+  const [productoSeleccionado, setProductoSeleccionado] =
+    useState<Producto | null>(null);
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.tsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
+    <main className="mx-auto max-w-5xl space-y-6 p-6">
+      <header className="flex flex-wrap items-center justify-between gap-4">
+        <h1 className="text-2xl font-bold">Inventario</h1>
+        <FiltroCategoria
+          categorias={categorias}
+          valor={categoria}
+          onChange={setCategoria}
+        />
+      </header>
+
+      {error ? (
+        <p role="alert" className="rounded-md bg-red-50 p-4 text-red-800">
+          No se pudieron cargar los productos: {error}
+        </p>
+      ) : cargando && productos.length === 0 ? (
+        <p className="py-8 text-center text-gray-500">Cargando productos…</p>
+      ) : (
+        // Al cambiar de categoría se mantiene la tabla anterior atenuada
+        // en lugar de vaciarla, para que la pantalla no "salte".
+        <div
+          aria-busy={cargando}
+          className={`space-y-6 transition-opacity ${cargando ? 'opacity-50' : ''}`}
         >
-          Count is {count}
-        </button>
-      </section>
-
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
+          <AlertaStockBajo productos={productos} />
+          <TablaProductos
+            productos={productos}
+            onRegistrarMovimiento={setProductoSeleccionado}
+          />
+          <GraficoStock productos={productos} />
         </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
+      )}
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+      {productoSeleccionado && (
+        <FormularioMovimiento
+          producto={productoSeleccionado}
+          onCerrar={() => setProductoSeleccionado(null)}
+        />
+      )}
+    </main>
+  );
 }
 
-export default App
+export default App;
