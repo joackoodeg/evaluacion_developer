@@ -1,7 +1,7 @@
 function App() {
   return (
     <main>
-      <h1>Inventario</h1>
+      <h1 className="text-2xl font-bold">Inventario</h1>
     </main>
   );
 }
