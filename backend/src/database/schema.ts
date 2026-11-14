@@ -18,6 +18,8 @@ export const tipoMovimiento = pgEnum('tipo_movimiento', ['entrada', 'salida']);
 export const categorias = pgTable('categorias', {
   id: serial('id').primaryKey(),
   nombre: varchar('nombre', { length: 100 }).notNull().unique(),
+  // identificador para URLs (?categoria=electronica): estable aunque cambie el nombre
+  slug: varchar('slug', { length: 100 }).notNull().unique(),
   descripcion: text('descripcion'),
 });
 
