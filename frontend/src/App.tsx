@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { FiltroCategoria } from './components/FiltroCategoria';
+import { GraficoStock } from './components/GraficoStock';
 import { TablaProductos } from './components/TablaProductos';
 import { useCategorias } from './hooks/useCategorias';
 import { useProductos } from './hooks/useProductos';
@@ -32,11 +33,10 @@ function App() {
         // en lugar de vaciarla, para que la pantalla no "salte".
         <div
           aria-busy={cargando}
-          className={
-            cargando ? 'opacity-50 transition-opacity' : 'transition-opacity'
-          }
+          className={`space-y-6 transition-opacity ${cargando ? 'opacity-50' : ''}`}
         >
           <TablaProductos productos={productos} />
+          <GraficoStock productos={productos} />
         </div>
       )}
     </main>
