@@ -24,6 +24,7 @@ coverage/
 # Editores y sistema operativo
 .vscode/*
 !.vscode/extensions.json
+!.vscode/settings.json
 .idea/
 .DS_Store
 Thumbs.db
