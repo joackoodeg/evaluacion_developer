@@ -18,11 +18,17 @@ async function main() {
     .values([
       {
         nombre: 'Electrónica',
+        slug: 'electronica',
         descripcion: 'Dispositivos y accesorios electrónicos',
       },
-      { nombre: 'Ropa', descripcion: 'Indumentaria y calzado' },
+      {
+        nombre: 'Ropa',
+        slug: 'ropa',
+        descripcion: 'Indumentaria y calzado',
+      },
       {
         nombre: 'Alimentos',
+        slug: 'alimentos',
         descripcion: 'Productos alimenticios no perecederos',
       },
     ])
