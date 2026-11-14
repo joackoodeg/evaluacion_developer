@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { AlertaStockBajo } from './components/AlertaStockBajo';
 import { FiltroCategoria } from './components/FiltroCategoria';
 import { GraficoStock } from './components/GraficoStock';
 import { TablaProductos } from './components/TablaProductos';
@@ -35,6 +36,7 @@ function App() {
           aria-busy={cargando}
           className={`space-y-6 transition-opacity ${cargando ? 'opacity-50' : ''}`}
         >
+          <AlertaStockBajo productos={productos} />
           <TablaProductos productos={productos} />
           <GraficoStock productos={productos} />
         </div>
