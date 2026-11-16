@@ -566,7 +566,7 @@ Dos botones al pie del formulario, alineados a la derecha: "Cancelar" (secundari
 
 ## 4. Git
 
-Todo el trabajo está en un repositorio público de GitHub, con 18 pull requests y 36 commits. Nada se commiteó directamente en `main` ni en `develop`: todo entró por PR.
+Todo el trabajo está en un repositorio público de GitHub, con 20 pull requests y 39 commits. Nada se commiteó directamente en `main` ni en `develop`: todo entró por PR.
 
 ### Repositorio
 
@@ -582,20 +582,22 @@ Usé una versión simplificada de Gitflow:
 | `develop` | Integración | PRs desde las ramas de trabajo |
 | `feature/*` | Funcionalidades (`feature/endpoint-productos`, `feature/grafico-stock`) | Salen de `develop`, vuelven por PR |
 | `chore/*` | Configuración e infraestructura (`chore/docker`, `chore/deploy-railway`) | Igual que las features |
+| `docs/*` | Documentación (`docs/respuestas`) | Igual que las features |
 
-Hubo dos releases, cada una con su PR de `develop` a `main`:
+Hubo tres releases, cada una con su PR de `develop` a `main`:
 
 - **v1.0.0** (PR #10): backend con el endpoint de productos.
-- **v1.1.0** (PR #18): frontend completo y CORS.
+- **v1.1.0** (PR #18): frontend completo, CORS y deploy del frontend.
+- **v1.2.0** (PR #20): documentación (respuestas formateadas y README).
 
-No agregué ramas de `release/*` ni de `hotfix/*`: para un proyecto de una persona y dos versiones serían pasos de más. Las ramas mergeadas se borran.
+No agregué ramas de `release/*` ni de `hotfix/*`: para un proyecto de una persona y tres versiones serían pasos de más. Las ramas mergeadas se borran.
 
 ### Commits
 
 Formato Conventional Commits con alcance: `tipo(alcance): descripción`, en español y en infinitivo.
 
-- **Tipos:** `feat`, `fix`, `chore`, `refactor`.
-- **Alcances:** `db`, `backend`, `frontend`, `productos`, `docker`, `deploy`, `config`.
+- **Tipos:** `feat`, `fix`, `chore`, `refactor`, `docs`.
+- **Alcances:** `db`, `backend`, `frontend`, `productos`, `docker`, `deploy`, `config`, `respuestas`, `readme`.
 - Un cambio lógico por commit, ordenados para que cada uno compile por sí solo. Por ejemplo, el endpoint se hizo en cuatro commits: slug en categorías, repositorio, controller y servicio, y validación.
 - Cuerpo del commit cuando el porqué no es obvio.
 - Los errores se corrigen con commits nuevos, sin reescribir el historial.
